@@ -16,6 +16,7 @@ public class Main {
             //    String name = rs.getString(1);
             //    System.out.println(name);
             //}
+            TDB.PstmtRetrieveDeparturesforStation();
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
