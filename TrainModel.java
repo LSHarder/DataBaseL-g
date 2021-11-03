@@ -53,5 +53,49 @@ public class TrainModel {
             System.out.println(rs.getString(1)+ " time:" + rs.getFloat(2));
         }
     }
-
+    public ArrayList<TrainInfo> QueryForDepartures() throws SQLException{
+        Scanner scanner=new Scanner(System.in);
+        ArrayList<TrainInfo> trainInfos = new ArrayList<>();
+        System.out.println("which Station do you want to depart form:");
+        String stStation= scanner.nextLine();
+        System.out.println("Which station do you want to go to?");
+        String endStation = scanner.nextLine();
+        System.out.println("At what time would you like to depart?");
+        float departureTime= scanner.nextFloat();
+        String sql="SELECT D1.trainid as train, D1.Stationname as start, D1.time as departure, "
+            +"D2.stationname as destination, D2.time as arrival "
+            +" FROM departure as D1 "
+            +" JOIN departure as D2 ON D1.trainid=D2.trainid "
+            +"WHERE D1.Stationname= ? AND D1.time > ? AND D2.Stationname = ? AND D1.time < D2.time ;";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1,stStation);
+        pstmt.setFloat(2,departureTime);
+        pstmt.setString(3,endStation);
+        rs=pstmt.executeQuery();
+        while(rs!=null && rs.next()){
+            String start=rs.getString("start");
+            String end=rs.getString("destination");
+            Integer train=rs.getInt("train");
+            float depart=rs.getFloat("departure");
+            float arr=rs.getFloat("arrival");
+            System.out.println(train+ ": " + start + " at " + depart + " -> " + end + " at " + arr);
+            TrainInfo t=new TrainInfo(train, start, end, depart,arr);
+            trainInfos.add(t);
+        }
+        return trainInfos;
+    }
+}
+class TrainInfo{
+    Integer trainid=null;
+    String startstation = null;
+    String endstation=null;
+    float departuretime;
+    float arrivaltime;
+    TrainInfo(Integer trainid, String start, String end, float depart, float arr){
+        this.arrivaltime=arr;
+        this.departuretime=depart;
+        this.startstation = start;
+        this.endstation = end;
+        this.trainid = trainid;
+    }
 }

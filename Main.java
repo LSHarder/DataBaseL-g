@@ -1,10 +1,11 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        String url="jdbc:sqlite:C:/Users/mille/IdeaProjects/sqlframads/TrainDb.sqlite";
-        TrainModel TDB=new TrainModel(url);
+        String url = "jdbc:sqlite:C:/Users/mille/IdeaProjects/sqlframads/TrainDb.sqlite";
+        TrainModel TDB = new TrainModel(url);
         try {
             //conn=DriverManager.getConnection(url);
             TDB.connectToTrainData();
@@ -16,17 +17,17 @@ public class Main {
             //    String name = rs.getString(1);
             //    System.out.println(name);
             //}
-            TDB.PstmtRetrieveDeparturesforStation();
-        }catch (SQLException e){
+            //TDB.PstmtRetrieveDeparturesforStation();
+            TDB.QueryForDepartures();
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             //if(conn!=null){
-                try{
-                    TDB.closeTrainDataConnection();
-                }catch (SQLException e2){
-                    System.out.println(e2.getMessage());
-                }
+            try {
+                TDB.closeTrainDataConnection();
+            } catch (SQLException e2) {
+                System.out.println(e2.getMessage());
+            }
 
         }
     }
