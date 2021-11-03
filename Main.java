@@ -2,30 +2,31 @@ import java.sql.*;
 
 public class Main {
     public static void main(String[] args){
-        Connection conn=null;
+
         String url="jdbc:sqlite:C:/Users/mille/IdeaProjects/sqlframads/TrainDb.sqlite";
-        Statement stmt=null;
-        ResultSet rs=null;
-        String sql = "Select name from Station;";
+        TrainModel TDB=new TrainModel(url);
         try {
-            conn=DriverManager.getConnection(url);
-            stmt=conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            while(rs!=null && rs.next()){
-                String name = rs.getString(1);
-                System.out.println(name);
-            }
+            //conn=DriverManager.getConnection(url);
+            TDB.connectToTrainData();
+            //stmt=conn.createStatement();
+            TDB.createStatement();
+            //rs = stmt.executeQuery(sql);
+            TDB.SQLQueryStation();
+            //while(rs!=null && rs.next()){
+            //    String name = rs.getString(1);
+            //    System.out.println(name);
+            //}
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
         finally {
-            if(conn!=null){
+            //if(conn!=null){
                 try{
-                    conn.close();
+                    TDB.closeTrainDataConnection();
                 }catch (SQLException e2){
                     System.out.println(e2.getMessage());
                 }
-            }
+
         }
     }
 }
